@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Claims Eligibility & Triage Prototype</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div class="top"><div><span><b>Claims Triage Prototype</b><small>Life microinsurance first-pass screening</small></span><span class="pill o-fast" id="pill">Ready</span></div></div>
+<div class="w">
+<p class="intro">This tool checks a claim against the policy rules and documents, then recommends who should look at it next. It never approves or rejects a claim. Results update as you type.</p>
+<div class="lay">
+<form class="form" onsubmit="return false">
+<div class="c"><h2>Try a scenario</h2><p class="hint">Load an example to see each outcome, then change any value.</p>
+<select id="scn" aria-label="Scenario"></select></div>
+<div class="c"><h2><i>1</i>Claim</h2>
+<label for="type">Claim type</label><select id="type"><option value="death">Death</option><option value="tpd">Total permanent disability</option><option value="ci">Critical illness</option><option value="hosp">Hospitalization</option></select>
+<div class="r2"><div><label for="chan">Received through</label><select id="chan"><option>Branch office</option><option>Online portal</option></select></div>
+<div><label for="amt">Amount claimed (GHS)</label><input id="amt" type="number" min="0" inputmode="numeric"></div></div></div>
+<div class="c"><h2><i>2</i>Policy and dates</h2>
+<div class="r2"><div><label for="sa">Cover limit (GHS)</label><input id="sa" type="number" min="0" inputmode="numeric"><p class="hint">Sum assured, or yearly hospitalization limit</p></div>
+<div><label for="prior">Hospital claims paid this year</label><input id="prior" type="number" value="0" min="0" inputmode="numeric"><p class="hint">Used for hospitalization only</p></div></div>
+<div class="r2"><div><label for="inc">Policy start date</label><input id="inc" type="date"></div>
+<div><label for="ev">Date of event</label><input id="ev" type="date"><p class="hint">Death, diagnosis, admission or assessment</p></div></div>
+<div class="r2"><div><label for="miss">Months in a row unpaid</label><input id="miss" type="number" value="0" min="0"><p class="hint">3 or more means the policy lapsed</p></div>
+<div><label for="rein">Reinstated on (if any)</label><input id="rein" type="date"></div></div></div>
+<div class="c"><h2><i>3</i>Documents received</h2><p class="hint">Tick what the claimant has provided.</p><div id="docs"></div></div>
+<div class="c"><h2><i>4</i>AI document checks</h2><p class="hint">In production these come from OCR and matching models. Here you set them by hand.</p>
+<label for="conf">Scan readability (OCR confidence, %)</label><input id="conf" type="number" value="95" min="0" max="100">
+<div class="grp">Flags raised</div>
+<label class="ck"><input type="checkbox" id="f_name"><span>Name or ID number does not match the policy</span></label>
+<label class="ck"><input type="checkbox" id="f_ben"><span>Claimant is not the named beneficiary</span></label>
+<label class="ck"><input type="checkbox" id="f_dup"><span>Same document or claim found on another policy</span></label>
+<label class="ck"><input type="checkbox" id="f_dx"><span>Diagnosis is not a covered critical illness</span></label>
+<label class="ck"><input type="checkbox" id="f_acc"><span>Cause of death looks accidental</span></label></div>
+</form>
+<div class="stick"><div class="c">
+<div id="res"></div>
+<div class="tabs" role="tablist"><button data-t="res" class="on">Checks</button><button data-t="msg">Claimant message</button><button data-t="log">Audit log</button><button data-t="all">All scenarios</button></div>
+<div id="tab"></div></div>
+<p class="foot">Rules: 180-day waiting period for every claim type. Lapse after 3 months unpaid. Reinstatement adds a new 180 days. Cover GHS 2,000 to 30,000, hospitalization GHS 250 to 500 a year.</p></div>
+</div></div>
+<script src="script.js"></script>
+</body></html>
